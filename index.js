@@ -62,7 +62,7 @@ router.route('/bears/:bear_id')
 router.route('/students/:student_Id')
     .get( (req,res) => {
         let Id = students.list.findIndex( (item) => (item.Id === +req.params.student_Id))
-        if(+students.list[Id] !== +req.params.student_Id) {
+        if(Id < 0) {
             res.json('Student Not Found')
         }
         else {   
@@ -71,7 +71,7 @@ router.route('/students/:student_Id')
     })
     .put( (req,res) => {
         let Id = students.list.findIndex( (item) => (item.Id === +req.params.student_Id))
-        if(+students.list[Id] !== +req.params.student_Id) {
+        if(Id < 0) {
             res.json('Student Not Found')
         }
         else { 
@@ -83,11 +83,13 @@ router.route('/students/:student_Id')
         }
     })
     .delete( (req,res) => {
-        students.list = students.list.filter( item => item.Id !== +req.params.student_Id )
-        if(+students.list[Id] !== +req.params.student_Id) {
+        let Id = students.list.findIndex( (item) => (item.Id === +req.params.student_Id))
+        
+        if(Id < 0) {
             res.json('Student Not Found')
         }
-        else {   
+        else {
+           students.list = students.list.filter( item => item.Id !== +req.params.student_Id )    
            res.json(students.list[Id])
         }
     })
